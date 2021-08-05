@@ -9,17 +9,11 @@ const usersPersistConfig = {
   key: 'users',
   storage: storage,
   whitelist: ['items']
-
-  // key: 'users',
-  // storage: storage,
-  // blacklist: ['error']
 }
-
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   users: persistReducer(usersPersistConfig, usersReducer),
-  // auth: () => ({ isAuth: false, token: "lgfdfhgjhkkjhgh" }),
 });
 
 export default rootReducer;
