@@ -1,12 +1,25 @@
 // ================ toolkit ==========================
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore } from "redux-persist";
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
+import {
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 
 const store = configureStore({
   reducer: rootReducer,
   // devTools: process.env.NODE_ENV !== "development",
   devTools: process.env.NODE_ENV !== "production",
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
 });
 
 persistStore(store);
@@ -24,7 +37,6 @@ export default store;
 // export default store;
 
 // const persistStore = (store) => {
-  
 
 //   store.getState()
 
