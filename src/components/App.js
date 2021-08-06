@@ -14,9 +14,9 @@ const App = () => {
       <Filter ident='users' callBack={setUsersFilter} />
       <UsersList />
       <hr />
-      <TaskForm />
+      {/* <TaskForm />
       <Filter ident='tasks' callBack={setTaskFilter} />
-      <TaskList />
+      <TaskList /> */}
     </>
   );
 };

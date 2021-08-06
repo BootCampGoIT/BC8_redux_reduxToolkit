@@ -1,5 +1,6 @@
 // ================ toolkit ==========================
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+
 import rootReducer from "./rootReducer";
 import {
   persistStore,
@@ -10,6 +11,17 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+import axios from "axios";
+
+// const customMiddleware = (store) => (next) => (action) => {
+//   console.log("action :>> ", action);
+//   if (action.type === "users/addUser") {
+//     axios.post(`https://shopbc8-30b11-default-rtdb.firebaseio.com/carts.json`, {
+//       products: JSON.parse(localStorage.getItem("cart")),
+//     });
+//   }
+//   return next(action);
+// };
 
 const store = configureStore({
   reducer: rootReducer,
@@ -20,11 +32,13 @@ const store = configureStore({
       ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
     },
   }),
+  // .concat(customMiddleware),
 });
 
 persistStore(store);
 
 export default store;
+
 // ================ redux ==========================
 
 // import { createStore } from "redux";
@@ -41,3 +55,18 @@ export default store;
 //   store.getState()
 
 // };
+
+// console.dir(store);
+
+// console.dir(window);
+
+// const getData = () => {
+//   const x = 5;
+//   return () => {
+//     console.log(x);
+//   };
+// };
+
+// const newF = getData();
+// newfF();
+// newfF();
