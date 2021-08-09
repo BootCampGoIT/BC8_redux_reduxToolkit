@@ -1,12 +1,18 @@
 // ======================== toolkit ===================
 import { createReducer } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import { addTask, deleteTask, setFilter } from "./taskActions";
+import { deleteUserTasks } from "../users/usersActions";
+import { addTask, deleteTask, getTasks, setFilter } from "./taskActions";
 
 const itemsReducer = createReducer([], {
   [addTask]: (state, { payload }) => [...state, payload],
   [deleteTask]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
+  [getTasks]: (_, { payload }) => payload,
+  [deleteUserTasks]: (state, { payload }) =>
+    state.map((task) =>
+      task.user.email === payload.email ? { ...task, user: "no user" } : task
+    ),
 });
 
 const filterReducer = createReducer("", {

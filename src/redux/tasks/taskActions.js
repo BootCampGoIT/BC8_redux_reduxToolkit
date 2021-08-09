@@ -1,9 +1,22 @@
 // ======================== toolkit ===================
 import { createAction } from "@reduxjs/toolkit";
 const addTask = createAction("tasks/addTask");
+const getTasks = createAction("tasks/getTasks");
 const deleteTask = createAction("tasks/deleteTask");
 const setFilter = createAction("tasks/setFilter");
-export { addTask, deleteTask, setFilter };
+const setError = createAction("tasks/setError");
+const resetError = createAction("tasks/resetError");
+const setLoader = createAction("tasks/setLoader");
+
+export {
+  getTasks,
+  addTask,
+  deleteTask,
+  setFilter,
+  setError,
+  resetError,
+  setLoader,
+};
 
 // ======================== redux ===================
 // const ADDTASK = "tasks/addTask";

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { resetError } from "../../redux/users/usersActions";
+import { errorSelector, isLoadingSelector } from "../../redux/users/userSelectors";
 import {
   addUserOperation,
   getUsersOperation,
@@ -62,10 +63,11 @@ class UsersForm extends Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
-    isLoading: state.users.isLoading,
-    error: state.users.error,
+    isLoading: isLoadingSelector(state),
+    error: errorSelector(state),
   };
 };
 

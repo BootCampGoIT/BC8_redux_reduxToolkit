@@ -5,6 +5,7 @@ import {
   setError,
   setLoader,
   deleteUser as deleteUserByID,
+  deleteUserTasks,
 } from "./usersActions";
 
 export const addUserOperation = (user) => async (dispatch) => {
@@ -36,19 +37,21 @@ export const getUsersOperation = () => async (dispatch, getState) => {
     dispatch(setLoader());
   }
 };
-export const deleteUserOperation = (id) => async (dispatch, getState) => {
-  dispatch(setLoader());
-  try {
-    await deleteUser(id);
-    dispatch(deleteUserByID(id));
-  } catch (error) {
-    if (error.message === "404") {
-      dispatch(setError("Resourse not found!"));
-    }
-    if (Number(error.message) > 500) {
-      dispatch(setError("Server not found!"));
-    }
-  } finally {
+export const deleteUserOperation =
+  (id, email) => async (dispatch, getState) => {
     dispatch(setLoader());
-  }
-};
+    try {
+      await deleteUser(id);
+      dispatch(deleteUserTasks(email));
+      dispatch(deleteUserByID(id));
+    } catch (error) {
+      if (error.message === "404") {
+        dispatch(setError("Resourse not found!"));
+      }
+      if (Number(error.message) > 500) {
+        dispatch(setError("Server not found!"));
+      }
+    } finally {
+      dispatch(setLoader());
+    }
+  };

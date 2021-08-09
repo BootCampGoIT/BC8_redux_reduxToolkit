@@ -1,6 +1,7 @@
 import { createReducer, combineReducers } from "@reduxjs/toolkit";
 
 import {
+  addCount,
   addUser,
   deleteUser,
   getAllUsers,
@@ -23,6 +24,9 @@ const filterReducer = createReducer("", {
 const isLoadingReducer = createReducer(false, {
   [setLoader]: (state) => !state,
 });
+const counterReducer = createReducer(0, {
+  [addCount]: (state) => state + 1,
+});
 
 const errorReducer = createReducer("", {
   [setError]: (_, { payload }) => payload,
@@ -34,6 +38,7 @@ const usersReducer = combineReducers({
   filter: filterReducer,
   error: errorReducer,
   isLoading: isLoadingReducer,
+  counter: counterReducer,
 });
 
 export default usersReducer;

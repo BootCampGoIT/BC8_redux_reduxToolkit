@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { addTask, deleteTask } from "../../redux/tasks/taskActions";
+
 import { connect } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+
+import { addTasksOperation } from "../../redux/tasks/tasksOperations";
+import { projectUsers } from "../../redux/users/userSelectors";
 
 const priorityValues = ["high", "medium", "low"];
 
@@ -17,19 +19,20 @@ class TaskForm extends Component {
     const { name, value } = e.target;
     this.setState({ [name]: value });
   };
+
   onHandleSubmit = (e) => {
     e.preventDefault();
     if (!this.props.users[0]) {
       alert("No users");
       return;
     }
-    this.props.addNewTask({
+    this.props.addTasksOperation({
       ...this.state,
       user: !this.state.user ? this.props.users[0]?.email : this.state.user,
-      id: uuidv4(),
     });
     this.setState({ ...initialState, user: this.props.users[0]?.email });
   };
+
   render() {
     return (
       <form onSubmit={this.onHandleSubmit}>
@@ -65,20 +68,14 @@ class TaskForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    users: state.users.items,
+    users: projectUsers(state),
   };
 };
 
-// const mapDispatchToProps = { addTask };
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    addNewTask: (task) => {
-      dispatch(addTask(task));
-    },
-
-    deleteTask: (id) => {
-      dispatch(deleteTask(id));
+    addTasksOperation: (task) => {
+      dispatch(addTasksOperation(task));
     },
   };
 };
