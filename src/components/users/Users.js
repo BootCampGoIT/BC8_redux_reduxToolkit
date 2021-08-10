@@ -1,5 +1,4 @@
 import React from "react";
-import Button from "./Button";
 import UsersForm from "./UsersForm";
 import UsersList from "./UsersList";
 
@@ -8,7 +7,7 @@ const Users = () => {
     <>
       <UsersForm />
       <UsersList />
-      <Button />
+     
     </>
   );
 };

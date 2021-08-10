@@ -1,10 +1,24 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { registerUser } from "./authActions";
+import { loginUser, registerUser, signOut } from "./authActions";
 
 const authReducer = createReducer(
-  {},
   {
-    [registerUser]: (_, { payload }) => payload,
+    idToken: "",
+    refreshToken: "",
+  },
+  {
+    [registerUser]: (_, { payload }) => ({
+      idToken: payload.idToken,
+      refreshToken: payload.refreshToken,
+    }),
+    [loginUser]: (_, { payload }) => ({
+      idToken: payload.idToken,
+      refreshToken: payload.refreshToken,
+    }),
+    [signOut]: () => ({
+      idToken: "",
+      refreshToken: "",
+    }),
   }
 );
 

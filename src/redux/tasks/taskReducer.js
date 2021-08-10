@@ -1,6 +1,7 @@
 // ======================== toolkit ===================
 import { createReducer } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import { signOut } from "../auth/authActions";
 import { deleteUserTasks } from "../users/usersActions";
 import { addTask, deleteTask, getTasks, setFilter } from "./taskActions";
 
@@ -13,10 +14,12 @@ const itemsReducer = createReducer([], {
     state.map((task) =>
       task.user.email === payload.email ? { ...task, user: "no user" } : task
     ),
+  [signOut]: () => [],
 });
 
 const filterReducer = createReducer("", {
   [setFilter]: (_, { payload }) => payload,
+  [signOut]: () => "",
 });
 
 const tasksReducer = combineReducers({
