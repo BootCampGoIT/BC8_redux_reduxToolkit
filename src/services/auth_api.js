@@ -12,6 +12,9 @@ const register = async (user) => {
     });
     const addUserToDB = await axios.post(baseURL + "/projectUsers.json", {
       email: user.email,
+      localId: response.data.localId,
+      displayName: response.data.displayName,
+      role: "user",
     });
     return { registerData: response.data, id: addUserToDB.data.name };
   } catch (error) {

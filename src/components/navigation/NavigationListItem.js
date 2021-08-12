@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const NavigationListItem = ({
@@ -8,6 +9,7 @@ const NavigationListItem = ({
   name,
   isPrivate,
   restricted,
+  displayName,
 }) => {
   return (
     <>
@@ -29,7 +31,9 @@ const NavigationListItem = ({
             exact={exact}
             className='navLink'
             activeClassName='navLinkActive'>
-            {name.toUpperCase()}
+            {path === "/profile"
+              ? displayName.toUpperCase() + name.toUpperCase()
+              : name.toUpperCase()}
           </NavLink>
         </li>
       )}
@@ -47,5 +51,10 @@ const NavigationListItem = ({
     </>
   );
 };
+const mapStateToProps = (state) => {
+  return {
+    displayName: state.user.displayName,
+  };
+};
 
-export default NavigationListItem;
+export default connect(mapStateToProps)(NavigationListItem);

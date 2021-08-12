@@ -12,7 +12,9 @@ class Auth extends Component {
   state = {
     email: "",
     password: "",
+    displayName: "",
   };
+  isRegisterPage = () => this.props.location.pathname === "/signup";
 
   onHandleChange = (e) => {
     const { name, value } = e.target;
@@ -21,13 +23,14 @@ class Auth extends Component {
 
   onHandleSubmit = (e) => {
     e.preventDefault();
-    this.props.location.pathname === "/signup"
-      ? this.props.registerUserOperation(this.state)
-      : this.props.loginUserOperation(this.state);
-  };
-  render() {
-    const { pathname } = this.props.location;
     const { email, password } = this.state;
+    this.isRegisterPage()
+      ? this.props.registerUserOperation(this.state)
+      : this.props.loginUserOperation({ email, password });
+  };
+
+  render() {
+    const { email, password, displayName } = this.state;
     return (
       <AuthContainer>
         <form
@@ -35,6 +38,25 @@ class Auth extends Component {
           className='user-form'
           autoComplete='off'
           name='userForm'>
+          {this.isRegisterPage() && (
+            <label className='user-label'>
+              UserName
+              <input
+                type='text'
+                name='displayName'
+                onChange={this.onHandleChange}
+                value={displayName}
+                className='user-input'
+                placeholder='Alex'
+                minLength='3'
+                autoComplete='on'
+                required
+              />
+              <svg className='icon-user'>
+                <use href={sprite + "#icon-drawer"} />
+              </svg>
+            </label>
+          )}
           <label className='user-label'>
             Email
             <input
@@ -69,7 +91,7 @@ class Auth extends Component {
             </svg>
           </label>
           <button type='submit' className='user-button'>
-            {pathname === "/signup" ? "Register" : "Login"}
+            {this.isRegisterPage() ? "Register" : "Login"}
           </button>
         </form>
       </AuthContainer>

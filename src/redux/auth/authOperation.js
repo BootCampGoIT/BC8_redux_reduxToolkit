@@ -14,6 +14,7 @@ const registerUserOperation = (user) => async (dispatch) => {
 const loginUserOperation = (user) => async (dispatch) => {
   try {
     const response = await login(user);
+ 
     dispatch(loginUser(response.loginData));
   } catch (error) {
     console.log("error :>> ", error);

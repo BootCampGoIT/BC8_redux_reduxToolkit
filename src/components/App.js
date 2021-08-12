@@ -1,4 +1,5 @@
 import React from "react";
+import { getCurrentUserInfo } from "../services/auth_api";
 
 // import Filter from "./Filter";
 // import UsersForm from "./users/UsersForm";
@@ -9,22 +10,24 @@ import React from "react";
 // import Users from "./users/Users";
 import Header from "./header/Header";
 import Main from "./main/Main";
+import { getUserInfo } from "../redux/user/userActions";
+import { connect } from "react-redux";
 
-const App = () => {
-  return (
-    <>
-      <Header />
-      <Main />
-      {/* <Auth /> */}
-      {/* <hr /> */}
-      {/* <Users /> */}
-      {/* <UsersForm />
-      <Filter ident='projectUsers' callBack={setUsersFilter} />
-      <UsersList /> */}
-      {/* <hr /> */}
-      {/* <Tasks /> */}
-    </>
-  );
-};
+class App extends React.Component {
+  // async componentDidMount() {
+  //   const userInfo = await getCurrentUserInfo();
+  //   this.props.getUserInfo(userInfo);
 
-export default App;
+  //   console.log("userInfo :>> ", userInfo);
+  // }
+  render() {
+    return (
+      <>
+        <Header />
+        <Main />
+      </>
+    );
+  }
+}
+
+export default connect(null, { getUserInfo })(App);

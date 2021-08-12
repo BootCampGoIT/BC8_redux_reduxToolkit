@@ -22,7 +22,7 @@ export const mainRoutes = [
   },
   //private
   {
-    name: "TaskPage",
+    name: "Projects",
     path: "/tasks",
     component: lazy(
       () => import("../pages/TaskPage") /* webpackChunkName: "TaskPage" */
@@ -31,7 +31,6 @@ export const mainRoutes = [
     isPrivate: true,
     restricted: false,
   },
-  //restricted
   {
     name: "Registration",
     path: "/signup",
