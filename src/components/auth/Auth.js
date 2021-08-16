@@ -1,71 +1,73 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useContext } from "react";
+import { useDispatch } from "react-redux";
 import {
   loginUserOperation,
   registerUserOperation,
 } from "../../redux/auth/authOperation";
 import { AuthContainer } from "./AuthStyled";
 import sprite from "../../icons/section1_sprite.svg";
-import { withRouter } from "react-router-dom";
+import {
+  useLocation,
+  useHistory,
+  useRouteMatch,
+  useParams,
+} from "react-router-dom";
+import { LanguageContext } from "../App";
+import languages from "../../languages";
+import {
+  languageSelector,
+  nameLanguageSelector,
+  placeholdersSelector,
+} from "../../languages/languagesSelectors/Auth";
 
-class Auth extends Component {
-  state = {
-    email: "",
-    password: "",
-    displayName: "",
-  };
-  isRegisterPage = () => this.props.location.pathname === "/signup";
+const initialState = {
+  email: "",
+  password: "",
+  displayName: "",
+};
 
-  onHandleChange = (e) => {
+const Auth = ({ registerUserOperation, loginUserOperation }) => {
+  const [state, setState] = useState({ ...initialState });
+  const { language } = useContext(LanguageContext);
+  const dispatch = useDispatch();
+
+  const location = useLocation();
+
+  const isRegisterPage = () => location.pathname === "/signup";
+
+  const onHandleChange = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    setState((prev) => ({ ...prev, [name]: value }));
   };
 
-  onHandleSubmit = (e) => {
+  const onHandleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
-    this.isRegisterPage()
-      ? this.props.registerUserOperation(this.state)
-      : this.props.loginUserOperation({ email, password });
+    const { email, password } = state;
+    isRegisterPage()
+      ? dispatch(registerUserOperation(state))
+      : dispatch(loginUserOperation({ email, password }));
   };
-
-  render() {
-    const { email, password, displayName } = this.state;
-    return (
-      <AuthContainer>
-        <form
-          onSubmit={this.onHandleSubmit}
-          className='user-form'
-          autoComplete='off'
-          name='userForm'>
-          {this.isRegisterPage() && (
-            <label className='user-label'>
-              UserName
-              <input
-                type='text'
-                name='displayName'
-                onChange={this.onHandleChange}
-                value={displayName}
-                className='user-input'
-                placeholder='Alex'
-                minLength='3'
-                autoComplete='on'
-                required
-              />
-              <svg className='icon-user'>
-                <use href={sprite + "#icon-drawer"} />
-              </svg>
-            </label>
-          )}
+  return (
+    <AuthContainer
+      length={
+        languages[language].pages.authPage.authForm.buttons.register.length ||
+        languages[language].pages.authPage.authForm.buttons.login.length
+      }>
+      <form
+        onSubmit={onHandleSubmit}
+        className='user-form'
+        autoComplete='off'
+        name='userForm'>
+        {isRegisterPage() && (
           <label className='user-label'>
-            Email
+            {languageSelector(language, "username")}
             <input
               type='text'
-              name='email'
-              onChange={this.onHandleChange}
-              value={email}
+              name='displayName'
+              onChange={onHandleChange}
+              value={state.displayName}
               className='user-input'
-              placeholder='alex@gmail.com'
+              placeholder={placeholdersSelector(language, "name")}
               minLength='3'
               autoComplete='on'
               required
@@ -74,31 +76,57 @@ class Auth extends Component {
               <use href={sprite + "#icon-drawer"} />
             </svg>
           </label>
-          <label className='user-label'>
-            Password
-            <input
-              type='text'
-              name='password'
-              onChange={this.onHandleChange}
-              value={password}
-              className='user-input'
-              required
-              placeholder='Qwerty123'
-              autoComplete='on'
-            />
-            <svg className='icon-user'>
-              <use href={sprite + "#icon-user"} />
-            </svg>
-          </label>
-          <button type='submit' className='user-button'>
-            {this.isRegisterPage() ? "Register" : "Login"}
-          </button>
-        </form>
-      </AuthContainer>
-    );
-  }
-}
+        )}
+        <label className='user-label'>
+          {languageSelector(language, "email")}
+          <input
+            type='text'
+            name='email'
+            onChange={onHandleChange}
+            value={state.email}
+            className='user-input'
+            placeholder={
+              languages[language].pages.authPage.authForm.placeholders.email
+            }
+            minLength='3'
+            autoComplete='on'
+            required
+          />
+          <svg className='icon-user'>
+            <use href={sprite + "#icon-drawer"} />
+          </svg>
+        </label>
+        <label className='user-label'>
+          {languageSelector(language, "password")}
+          <input
+            type='text'
+            name='password'
+            onChange={onHandleChange}
+            value={state.password}
+            className='user-input'
+            required
+            placeholder={
+              languages[language].pages.authPage.authForm.placeholders.password
+            }
+            autoComplete='on'
+          />
+          <svg className='icon-user'>
+            <use href={sprite + "#icon-user"} />
+          </svg>
+        </label>
+        <button type='submit' className='user-button'>
+          {isRegisterPage()
+            ? languages[language].pages.authPage.authForm.buttons.register
+                .length > 6
+              ? languages[
+                  language
+                ].pages.authPage.authForm.buttons.register.slice(10) + "..."
+              : languages[language].pages.authPage.authForm.buttons.register
+            : languages[language].pages.authPage.authForm.buttons.login}
+        </button>
+      </form>
+    </AuthContainer>
+  );
+};
 
-export default connect(null, { registerUserOperation, loginUserOperation })(
-  withRouter(Auth)
-);
+export default Auth;

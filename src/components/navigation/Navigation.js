@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
+import languages from "../../languages";
 import { signOut } from "../../redux/auth/authActions";
 import { mainRoutes } from "../../routes/mainRoutes";
+import { LanguageContext } from "../App";
 import NavigationListItem from "./NavigationListItem";
 import { NavigationContainer } from "./NavigationStyled";
 
 const Navigation = ({ isAuth, signOut }) => {
+  const language = useContext(LanguageContext);
   return (
     <NavigationContainer>
       <ul className='navList'>
@@ -14,7 +17,7 @@ const Navigation = ({ isAuth, signOut }) => {
         ))}
         {isAuth && (
           <li className='navLink' onClick={() => signOut()}>
-            LOGOUT
+            {languages[language].header.navigation.logout}
           </li>
         )}
       </ul>
@@ -24,7 +27,7 @@ const Navigation = ({ isAuth, signOut }) => {
 
 const mapStateToProps = (state) => {
   return {
-    isAuth: state.auth.idToken, //false "" || true "ghjg"
+    isAuth: state.auth.idToken, 
   };
 };
 

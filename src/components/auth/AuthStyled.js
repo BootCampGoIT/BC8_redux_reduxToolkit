@@ -55,7 +55,9 @@ export const AuthContainer = styled.div`
   }
 
   .user-button {
+    /* font-size: ${(props) => (props.length > 12 ? "8px" : "16px")}; */
     align-self: center;
-    width: 120px;
+    text-align: center;
+    /* width: 120px; */
   }
 `;

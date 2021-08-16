@@ -1,58 +1,46 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Tasks from "../tasks/Tasks";
 import { ProjectListContainer } from "./ProjectListStyled";
 
-class ProjectList extends React.Component {
-  state = {
-    currentProject: null,
-  };
+const ProjectList = () => {
+  const projects = useSelector((state) => state.projects);
+  const [currentProject, setProject] = useState(null);
 
-  addCurrentProjectTasks = () => {
-    const newProject = this.props.projects.find(
-      (project) => project.id === this.state.currentProject.id
+  const addCurrentProjectTasks = () => {
+    const newProject = projects.find(
+      (project) => project.id === currentProject.id
     );
-    this.setState({ currentProject: newProject });
+    setProject(newProject);
   };
 
-  setCurrentProject = (e) => {
+  const setCurrentProject = (e) => {
     const id = e.target.id;
-    const project = this.props.projects.find((project) => project.id === id);
-    this.setState({ currentProject: project });
+    const project = projects.find((project) => project.id === id);
+    setProject(project);
   };
-  render() {
-    const { currentProject } = this.state;
-    return (
-      <>
-        <ProjectListContainer>
-          {this.props.projects.map((project) => (
-            <li key={project.id} className='projectItem'>
-              Name: {project.name}
-              <button
-                type='button'
-                id={project.id}
-                onClick={this.setCurrentProject}>
-                Add tasks
-              </button>
-            </li>
-          ))}
-        </ProjectListContainer>
-        {currentProject && (
-          <Tasks
-            addCurrentProjectTasks={this.addCurrentProjectTasks}
-            projectName={currentProject.name}
-            projectId={currentProject.id}
-            tasks={currentProject.tasks || []}
-          />
-        )}
-      </>
-    );
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-    projects: state.projects,
-  };
+  return (
+    <>
+      <ProjectListContainer>
+        {projects.map((project) => (
+          <li key={project.id} className='projectItem'>
+            Name: {project.name}
+            <button type='button' id={project.id} onClick={setCurrentProject}>
+              Add tasks
+            </button>
+          </li>
+        ))}
+      </ProjectListContainer>
+      {currentProject && (
+        <Tasks
+          addCurrentProjectTasks={addCurrentProjectTasks}
+          projectName={currentProject.name}
+          projectId={currentProject.id}
+          tasks={currentProject.tasks || []}
+        />
+      )}
+    </>
+  );
 };
-export default connect(mapStateToProps)(ProjectList);
+
+export default ProjectList;

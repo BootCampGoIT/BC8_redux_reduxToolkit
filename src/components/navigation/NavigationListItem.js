@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
+import languages from "../../languages";
+import { LanguageContext } from "../App";
 
 const NavigationListItem = ({
   isAuth,
@@ -11,6 +13,7 @@ const NavigationListItem = ({
   restricted,
   displayName,
 }) => {
+  const { language } = useContext(LanguageContext);
   return (
     <>
       {!isPrivate && !restricted && (
@@ -20,7 +23,7 @@ const NavigationListItem = ({
             exact={exact}
             className='navLink'
             activeClassName='navLinkActive'>
-            {name.toUpperCase()}
+            {languages[language].header.navigation[name].toUpperCase()}
           </NavLink>
         </li>
       )}
@@ -32,8 +35,9 @@ const NavigationListItem = ({
             className='navLink'
             activeClassName='navLinkActive'>
             {path === "/profile"
-              ? displayName.toUpperCase() + name.toUpperCase()
-              : name.toUpperCase()}
+              ? displayName.toUpperCase() +
+                languages[language].header.navigation[name].toUpperCase()
+              : languages[language].header.navigation[name].toUpperCase()}
           </NavLink>
         </li>
       )}
@@ -44,7 +48,7 @@ const NavigationListItem = ({
             exact={exact}
             className='navLink'
             activeClassName='navLinkActive'>
-            {name.toUpperCase()}
+            {languages[language].header.navigation[name].toUpperCase()}
           </NavLink>
         </li>
       )}

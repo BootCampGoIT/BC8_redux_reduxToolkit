@@ -5,6 +5,6 @@ export const HeaderContainer = styled.header`
   background-color: #212121;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0 40px;
 `;
